@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@vonage/server-sdk": "^3.0.18",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.0",
+    "nexmo": "^2.9.1",
+    "nodemon": "^2.0.20",
+    "otp": "^1.1.0",
+    "otp-generator": "^4.0.0",
+    "router": "^1.3.7",
+    "speakeasy": "^2.0.0",
+    "twilio": "^3.84.1"
+  },
+  "name": "e_mart-backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
