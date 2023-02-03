@@ -168,7 +168,7 @@ router.post("/login", async (req, res, next) => {
         success: true,
         data: {
           status: 200,
-          message: "Shi h",
+          message: "User login successful",
           userId: existingUser.id,
           email: existingUser.email,
           token: token,
