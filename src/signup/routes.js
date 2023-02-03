@@ -8,7 +8,7 @@ const verifyToken = require('../verifyToken');
 const {Vonage} = require('@vonage/server-sdk')
 const otpGenerator = require('otp-generator')
 
-const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+//const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
 
 // const twilio = require('twilio');
 // const accountSid = process.env.ACCOUNT_SID_TWILLIO;
@@ -24,6 +24,28 @@ const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: 
 const speakeasy = require('speakeasy');
 
 const saltRounds = 10;
+let otp7 = []
+function otpGenerate() {
+  const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+  console.log(otp);
+  // if(otp7.length){
+    // otp7 = []
+    // otp7.push(otp)
+  // }
+  // else{
+   // otp7=[]
+    otp7.push(otp)
+  // }
+  return otp7;
+}
+
+router.get('/sendOtp', (req, res)=> {
+  try{
+    const sendOtp = otpGenerate
+  }catch(error){
+    res.send(error)
+  }
+})
 
 router.post("/signUp", async (req, res) => {
   const newUser = new userModel(req.body);
@@ -42,9 +64,7 @@ router.post("/signUp", async (req, res) => {
 
   try {
     await newUser.save();
-    
-    const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-    console.log(otp);
+    let otp = otpGenerate()
     const vonage = new Vonage({
       apiKey: process.env.VONAGE_API_KEY,
       apiSecret: process.env.VONAGE_API_SECRET
@@ -188,18 +208,20 @@ router.get("/getAll", async (req, res)=> {
 //   sendSMS();
 //   return secret;
 // }
-
+//let otp0 = otpGenerate()
 router.post('/verifyOtp',async (req, res)=>{
 // const secret1 = secret
+let otp1 = otpGenerate()
+console.log(otp1);
 const userDeatils = verifyToken(req);
 let email=userDeatils.email;
 let existInDb = await userModel.findOne({email});
-const secret = speakeasy.generateSecret({length: 20});
-const token1 = speakeasy.totp({
-  secret: secret.base32,
-  encoding: 'base32',
-});
-  console.log(token1);
+// const secret = speakeasy.generateSecret({length: 20});
+// const token1 = speakeasy.totp({
+//   secret: secret.base32,
+//   encoding: 'base32',
+// });
+  //console.log(token1);
   // const vonage = new Vonage({
   //   apiKey: process.env.VONAGE_API_KEY,
   //   apiSecret: process.env.VONAGE_API_SECRET
@@ -227,7 +249,7 @@ const token1 = speakeasy.totp({
 try {
   const token = req.body.otp;
   console.log(token);
-  console.log(secret);
+ // console.log(secret);
   // const verified = speakeasy.totp.verify({
   //   secret: secret1.base32,
   //   encoding: 'base32',
@@ -235,18 +257,25 @@ try {
   //   window: 1, // The number of windows of time to check
   // });
   //console.log(verified);
-  if(token==token1){
+  console.log(otp1[0]);
+  if(token===otp1[0]){
     existInDb.verified=true,
-    existInDb.save();
+    await existInDb.save();
+    console.log('kya haal hai');
+    otp7 = []
    return res.status(201).json({
       status: 201,
       message: "Verified"
     })
   }
-    res.status(400).json({
+  else{
+    console.log('acha');
+    otp7 = []
+    return res.status(400).json({
       status:400,
       message: "Bad Request"
     })
+  }
 } catch (error) {
   res.status(500).send(error)
 }
