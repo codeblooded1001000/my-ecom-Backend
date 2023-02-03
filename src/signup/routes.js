@@ -55,7 +55,7 @@ function sendMsg(mobile, otp) {
 return sendSMS();
 }
 
-router.get('/sendOtp',async (req, res)=> {
+router.get('/sendOtp',async(req, res)=> {
   try{
     otp7 = []
     const decodedToken = verifyToken(req);
@@ -102,7 +102,7 @@ router.post("/signUp", async (req, res) => {
     await newUser.save();
     let otp = otpGenerate()
     let mobile = req.body.mobile;
-    sendMsg(mobile, otp)
+    await sendMsg(mobile, otp)
 //  res.redirect('/verifyOtp')
    // let mobile =req.body.mobile
     //forSecret(mobile);
