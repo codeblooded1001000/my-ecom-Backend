@@ -39,9 +39,45 @@ function otpGenerate() {
   return otp7;
 }
 
-router.get('/sendOtp', (req, res)=> {
+function sendMsg(mobile, otp) {
+  const vonage = new Vonage({
+    apiKey: process.env.VONAGE_API_KEY,
+    apiSecret: process.env.VONAGE_API_SECRET
+  })
+  const from = "Vonage APIs"
+  const to = "91"+mobile
+  const text = `Your OTP for E-mart is ${otp}`
+  async function sendSMS() {
+    await vonage.sms.send({to, from, text})
+        .then(resp => { console.log('Message sent successfully'); console.log(resp); })
+        .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
+}
+return sendSMS();
+}
+
+router.get('/sendOtp',async (req, res)=> {
   try{
-    const sendOtp = otpGenerate
+    otp7 = []
+    const decodedToken = verifyToken(req);
+    const otp = otpGenerate()
+    let email = decodedToken.email
+    let user =await userModel.find({email})
+    console.log(user);
+    if(user){
+      let mobile = user[0].mobile
+      console.log(mobile);
+      await sendMsg(mobile, otp)
+      return res.status(200).json({
+        status: 200,
+        message: "Message sent go to this link: /users/verifyOtp"
+      })
+    }
+    else{
+      return res.status(404).json({
+        status: 404,
+        message: "User not found"
+      })
+    }
   }catch(error){
     res.send(error)
   }
@@ -65,19 +101,8 @@ router.post("/signUp", async (req, res) => {
   try {
     await newUser.save();
     let otp = otpGenerate()
-    const vonage = new Vonage({
-      apiKey: process.env.VONAGE_API_KEY,
-      apiSecret: process.env.VONAGE_API_SECRET
-    })
-    const from = "Vonage APIs"
-    const to = "91"+req.body.mobile
-    const text = `Your OTP for E-mart is ${otp}`
-    async function sendSMS() {
-      await vonage.sms.send({to, from, text})
-          .then(resp => { console.log('Message sent successfully'); console.log(resp); })
-          .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
-  }
-  sendSMS();
+    let mobile = req.body.mobile;
+    sendMsg(mobile, otp)
 //  res.redirect('/verifyOtp')
    // let mobile =req.body.mobile
     //forSecret(mobile);
@@ -111,7 +136,7 @@ router.post("/login", async (req, res, next) => {
   try {
     existingUser = await userModel.findOne({ email: email });
   } catch {
-    const error = new Error("Mudo yha se");
+    const error = new Error("User does not exist here");
     return next(error);
   }
   if (!existingUser) {
@@ -270,7 +295,6 @@ try {
   }
   else{
     console.log('acha');
-    otp7 = []
     return res.status(400).json({
       status:400,
       message: "Bad Request"
