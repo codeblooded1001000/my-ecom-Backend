@@ -310,4 +310,27 @@ router.get('/accessResource', (req, res)=>{
   res.status(200).json({success:true, data:{userId:decodedToken.userId, email:decodedToken.email}}); 
 });
 
+router.get('', async(req, res)=>{
+  try
+{  const role = req.query.find
+  const email = req.query.email
+  const user = await userModel.find({eseHi: role})
+  console.log(user[0]);
+  // res.send(user)
+  res.status(200).json({
+    userId: user[0]._id,
+    name: user[0].name,
+    role: user[0].role,
+    email: user[0].email,
+    contact: user[0].mobile,
+    github: user[0].github
+  })
+} catch(err){
+   res.status(404).json({
+    status: 404,
+    message: "not found"
+   })
+}
+})
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
-const UserSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+const UserSchema = new Schema({
   name: {
     type: String,
   //  required: true,
@@ -35,6 +35,15 @@ const UserSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false
+  },
+  role:{
+    type : String
+  },
+  github: {
+    type: String
+  },
+  eseHi: {
+    type: String
   }
 },
 { versionKey: false });
