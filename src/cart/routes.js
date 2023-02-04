@@ -32,7 +32,7 @@ router.post('/addItemToCart', async(req, res)=>{
     if(productAlreadyExist.length>0){
       const quantity = cartAlreadyExist[0].items.quantity
       quantity++;
-      await cartAlreadyExist.save()
+      await cartAlreadyExist[0].save()
       res.status(200).send(cartAlreadyExist)
     }
     else{
