@@ -1,18 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const productModel = require('./models')
+const addProducts = require('./controller')
 
-router.post('/addProducts', async(req, res)=>{
-  try {
-    const newProduct = new productModel(req.body)
-    await newProduct.save()
-    res.send(newProduct)
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      message: "Internal Server Error"
-    })
-  }
-})
+router.post('/addProducts', addProducts)
 
 module.exports = router;

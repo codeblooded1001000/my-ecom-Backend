@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const signupRoutes = require("./signup/routes");
 const productRoutes = require("./products/routes");
 const cartRoutes =require('./cart/routes')
+const checkoutRoute =require('./cart/checkout/routes')
 require('dotenv').config();
 const app = express();
 app.use(express.json());
@@ -26,6 +27,7 @@ db.once("open", function () {
 app.use('/users',signupRoutes);
 app.use('/products',productRoutes);
 app.use('/carts',cartRoutes);
+app.use('/checkout',checkoutRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

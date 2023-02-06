@@ -13,10 +13,6 @@ const UserSchema = new Schema({
     type: String,
    // required: false
   },
-  username: {
-    type: String,
-   // required: false
-  },
   mobile: {
     type: Number,
    // required: false
@@ -37,13 +33,9 @@ const UserSchema = new Schema({
     default: false
   },
   role:{
-    type : String
-  },
-  github: {
-    type: String
-  },
-  eseHi: {
-    type: String
+    type : String,
+    enum: ['USER', 'ADMIN'],
+    default: 'USER'
   }
 },
 { versionKey: false });
