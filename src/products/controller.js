@@ -11,7 +11,7 @@ const checkAdmin = async(token, res)=>{
 }
 
 const addProducts = async(req, res)=>{
-  const decodedToken = verifyToken(req)
+  const decodedToken = verifyToken(req, res)
   let flag = await checkAdmin(decodedToken, res);
   console.log(flag);
   if(!flag){

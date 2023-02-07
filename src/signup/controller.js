@@ -130,7 +130,7 @@ const login = async (req, res) => {
 const sendOtp = async(req, res)=>{
   try{
     otp7 = []
-    const decodedToken = verifyToken(req);
+    const decodedToken = verifyToken(req, res);
     const otp = otpGenerate()
     let email = decodedToken.email
     let user =await userModel.find({email})
@@ -169,7 +169,7 @@ const verifyOtp = async(req, res)=>{
   // const secret1 = secret
 // let otp1 = otpGenerate()
 // console.log(otp1);
-const userDeatils = verifyToken(req);
+const userDeatils = verifyToken(req, res);
 let email=userDeatils.email;
 let existInDb = await userModel.findOne({email});
 // const secret = speakeasy.generateSecret({length: 20});
@@ -237,7 +237,7 @@ try {
 }
 
 const updateUser = async(req, res)=>{
-  const decodedToken = verifyToken(req)
+  const decodedToken = verifyToken(req, res)
   const email = decodedToken.email
    try {
     const user = await userModel.findOne({email})

@@ -3,7 +3,7 @@ const cartModel = require('./models')
 const productModel = require('../products/models')
 
 const addItemToCart = async(req, res)=>{
-  const decodedToken = verifyToken(req)
+  const decodedToken = verifyToken(req, res)
   // checkAdmin(decodedToken, res);
   // return res.status(200).send(user)
   try {
