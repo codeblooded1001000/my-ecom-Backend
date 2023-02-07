@@ -1,4 +1,4 @@
-const verifyToken = require('../verifyToken')
+const verifyToken = require('../middlewares/auth')
 const cartModel = require('./models')
 const productModel = require('../products/models')
 

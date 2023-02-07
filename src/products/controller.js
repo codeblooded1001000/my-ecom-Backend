@@ -1,5 +1,5 @@
 const productModel = require('./models')
-const verifyToken = require('../verifyToken');
+const verifyToken = require('../middlewares/auth');
 const userModel = require('../signup/models')
 
 const checkAdmin = async(token, res)=>{

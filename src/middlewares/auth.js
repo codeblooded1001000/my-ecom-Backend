@@ -1,4 +1,13 @@
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
+
+function signToken(user){
+  return jwt.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  )
+}
 
 function verifyToken(req, res){
   if(!(req.headers.authorization)){
@@ -7,7 +16,7 @@ function verifyToken(req, res){
   try {
     const token = req.headers.authorization.split(' ')[1];
     //Authorization: 'Bearer TOKEN'
-    const decodedToken = jwt.verify(token,"secretkeyappearshere" );
+    const decodedToken = jwt.verify(token,process.env.JWT_SECRET );
     return decodedToken; 
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
@@ -18,4 +27,4 @@ function verifyToken(req, res){
   }
 }
 
-module.exports = verifyToken
+module.exports = {verifyToken, signToken}

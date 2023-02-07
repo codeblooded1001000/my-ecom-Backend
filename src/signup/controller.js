@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const bcrypt = require("bcryptjs");
-const verifyToken = require('../verifyToken');
+const verifyToken = require('../middlewares/auth');
 const {Vonage} = require('@vonage/server-sdk')
 const otpGenerator = require('otp-generator')
 const userModel = require("./models");
+const {signToken} = require('../middlewares/auth')
 
 /*********** DEPRECATED OTP SYSTEM **********/
 
@@ -58,11 +59,7 @@ const signUp =async (req, res)=>{
     // let mobile = req.body.mobile;
     // await sendMsg(mobile, otp)
     let token;
-    token = jwt.sign(
-      { userId: newUser.id, email: newUser.email },
-      "secretkeyappearshere",
-      { expiresIn: "1h" }
-    );
+    token = signToken(newUser);
     await newUser.save();
     return res
     .status(201)
@@ -94,11 +91,7 @@ const login = async (req, res) => {
   }
   try {
   //let token;
-  let token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
-      "secretkeyappearshere",
-      { expiresIn: "1h" }
-    );
+  let token = signToken(existingUser);
   if (existingUser) {
     const cmp = await bcrypt.compare(password, existingUser.password);
     if (cmp) {
