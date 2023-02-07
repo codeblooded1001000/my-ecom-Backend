@@ -1,6 +1,8 @@
 const verifyToken = require('../verifyToken')
 const discountModel = require('./models')
 const userModel = require('../signup/models')
+const PurchaseDetails = require('../cart/checkout/models')
+const productModel = require('../products/models')
 
 const checkAdmin = async(token)=>{
   let email = token.email
@@ -37,7 +39,36 @@ const generateDiscountCode = async(req, res)=>{
 }
 
 const getTotalPurchaseDetails = async(req, res)=>{
-  
+  const decodedToken = verifyToken(req, res)
+  let flag = await checkAdmin(decodedToken);
+  console.log(flag);
+  if(!flag){
+    return res.status(403).json({
+      status: 403,
+      message : "You are not allowed to perform this operation"
+    })
+  }
+  try {
+    const purchaseDetails = await PurchaseDetails.find({})
+
+    let totalAmount = 0;
+    let discountAmount = 0;
+    let countOfItemsPurchased = 0;
+    for(var i = 0; i<purchaseDetails.length; i++){
+      totalAmount += purchaseDetails[i].totalAmount;
+      discountAmount += purchaseDetails[i].discountedAmount;
+      countOfItemsPurchased += purchaseDetails[i].itemDetails.length
+    }
+    res.status(200).json({
+      sttatus: 200,
+      message: "Total Purchase details",
+      totalAmount,
+      discountAmount,
+      countOfItemsPurchased
+    })
+  } catch (error) {
+    return res.status(500).send("Something Went Wrong")
+  }
 }
 
 module.exports = {generateDiscountCode, getTotalPurchaseDetails}

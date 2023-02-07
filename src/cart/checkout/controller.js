@@ -54,7 +54,7 @@ const getPurchaseDetails = async(req, res)=>{
       discountedPrice = getDiscount(totalPrice, discountCode, req)
       if(discountedPrice==0) return res.status(400).json({
         status: 400,
-        message: "Inavalid Coupon Code"
+        message: "Invalid Coupon Code"
       })
     }
     //let discountedPrice = getDiscount(totalPrice, discountCode)
@@ -62,12 +62,12 @@ const getPurchaseDetails = async(req, res)=>{
     let priceAfterDiscount = totalPrice-discountedPrice
     newPurchaseDetail.totalAmount = priceAfterDiscount
     newPurchaseDetail.deliveryAddress = req.body.deliveryAddress
-    sendMail(email)
+    await sendMail(email)
     await newPurchaseDetail.save()
-    await cartDetails[0].delete()
+  //  await cartDetails[0].delete()
     return res.status(200).json({
       status: 200,
-      message: 'Your Purchase Details',
+      message: "Your purchase details",
       data: newPurchaseDetail,
       discountDetails: flag ? `You get a discount of 10%, your discount coupon is ${coupon}, you can avail this in your next order, You can only use this code only in the next order` : (flag1 ? `Yaayy! You get a discount of Rs.${discountedPrice}` : "No Discount")
     }) 
@@ -76,15 +76,4 @@ const getPurchaseDetails = async(req, res)=>{
   }
 }
 
-const buy =async(req, res)=>{
-  const decodedToken =verifyToken(req, res)
-  const userId = decodedToken.userId
-  try {
-    const cartDetails = await cartModel.findOne({userId})
-    return res.status(200).send(cartDetails)
-  } catch (error) {
-    
-  }
-}
-
-module.exports = {getPurchaseDetails, buy}
+module.exports = {getPurchaseDetails}

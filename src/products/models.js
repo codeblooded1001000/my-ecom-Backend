@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
   },
   currency:{
     type: String
-  }
+  },
 },
 {versionKey: false})
 
