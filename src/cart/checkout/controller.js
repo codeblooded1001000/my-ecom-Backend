@@ -38,7 +38,6 @@ const getPurchaseDetails = async(req, res)=>{
     for(var i =0; i<items.length; i++){
       totalPrice += items[i].price;
     }
-    console.log(totalPrice);
     newPurchaseDetail.itemDetails = cartDetails[0].items
     newPurchaseDetail.userId = userId
     newPurchaseDetail.userContact.email = email
@@ -47,15 +46,18 @@ const getPurchaseDetails = async(req, res)=>{
     let discountCode
     let discountedPrice = 0
     let flag1 = false
+    let discountDetails
     if((getPurchaseDetail.length)%10==0 && (getPurchaseDetail.length)>=10 && req.body.code){
       flag1=true
-      let discountDetails = await discountModel.findOne({orderNumber: 10})
+      discountDetails = await discountModel.findOne({orderNumber: 10})
       discountCode = discountDetails.discountCoupon
       discountedPrice = getDiscount(totalPrice, discountCode, req)
+      newPurchaseDetail.discountCouponUsed = discountCode
       if(discountedPrice==0) return res.status(400).json({
         status: 400,
         message: "Invalid Coupon Code"
       })
+      await discountDetails.delete()
     }
     //let discountedPrice = getDiscount(totalPrice, discountCode)
     newPurchaseDetail.discountedAmount = discountedPrice

@@ -3,19 +3,20 @@ var Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: {
     type: String,
-  //  required: true,
+   required: true,
   },
   age: {
     type: Number,
     default: 0,
+    required: true
   },
   email: {
     type: String,
-   // required: false
+    required: true
   },
   mobile: {
     type: Number,
-   // required: false
+    required: true
   },
   password: {
     type: String,
@@ -24,13 +25,6 @@ const UserSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  },
-  mobile: {
-    type: String
-  },
-  verified: {
-    type: Boolean,
-    default: false
   },
   role:{
     type : String,

@@ -7,7 +7,6 @@ const productModel = require('../products/models')
 const checkAdmin = async(token)=>{
   let email = token.email
   let user = await userModel.findOne({email})
- // console.log(user);
   let flag =false
   return (user.role=='ADMIN') ? flag = true: flag
 }
@@ -15,7 +14,6 @@ const checkAdmin = async(token)=>{
 const generateDiscountCode = async(req, res)=>{
   const decodedToken = verifyToken(req, res)
   let flag = await checkAdmin(decodedToken);
-  console.log(flag);
   if(!flag){
     return res.status(403).json({
       status: 403,
@@ -41,7 +39,6 @@ const generateDiscountCode = async(req, res)=>{
 const getTotalPurchaseDetails = async(req, res)=>{
   const decodedToken = verifyToken(req, res)
   let flag = await checkAdmin(decodedToken);
-  console.log(flag);
   if(!flag){
     return res.status(403).json({
       status: 403,
@@ -54,17 +51,22 @@ const getTotalPurchaseDetails = async(req, res)=>{
     let totalAmount = 0;
     let discountAmount = 0;
     let countOfItemsPurchased = 0;
+    let discountCouponCodes = [];
     for(var i = 0; i<purchaseDetails.length; i++){
       totalAmount += purchaseDetails[i].totalAmount;
       discountAmount += purchaseDetails[i].discountedAmount;
-      countOfItemsPurchased += purchaseDetails[i].itemDetails.length
+      countOfItemsPurchased += purchaseDetails[i].itemDetails.length;
+      if(purchaseDetails[i].discountCouponUsed){
+        discountCouponCodes.push(purchaseDetails[i].discountCouponUsed);
+      }
     }
     res.status(200).json({
       sttatus: 200,
       message: "Total Purchase details",
       totalAmount,
       discountAmount,
-      countOfItemsPurchased
+      countOfItemsPurchased,
+      discountCouponCodes
     })
   } catch (error) {
     return res.status(500).send("Something Went Wrong")

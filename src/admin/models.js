@@ -5,10 +5,12 @@ const discountSchema = new mongoose.Schema({
     type: String
    },
    discountPercentage:{
-    type: Number
+    type: Number,
+    required: true,
    },
    orderNumber:{
-    type: Number
+    type: Number,
+    required: true
    }
 }, {versionKey: false})
 

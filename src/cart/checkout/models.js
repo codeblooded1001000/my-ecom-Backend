@@ -22,6 +22,9 @@ const purchaseSchema = new mongoose.Schema({
   },
   deliveryAddress:{
     type: String
+  },
+  discountCouponUsed:{
+    type: String
   }
 }, {versionKey: false})
 

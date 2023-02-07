@@ -2,19 +2,23 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    required: true,
   },
   price:{
-    type: Number
+    type: Number,
+    required: true,
   },
   image: {
     type: String
   },
   color: {
-    type: String
+    type: String,
+    required: true,
   },
   currency:{
-    type: String
+    type: String,
+    required: true,
   },
 },
 {versionKey: false})

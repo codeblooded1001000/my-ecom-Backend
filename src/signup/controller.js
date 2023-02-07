@@ -6,38 +6,40 @@ const {Vonage} = require('@vonage/server-sdk')
 const otpGenerator = require('otp-generator')
 const userModel = require("./models");
 
+/*********** DEPRECATED OTP SYSTEM **********/
+
+// let otp7 = []
+// function otpGenerate() {
+//   const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+//   console.log(otp);
+//   // if(otp7.length){
+//     // otp7 = []
+//     // otp7.push(otp)
+//   // }
+//   // else{
+//    // otp7=[]
+//     otp7.push(otp)
+//   // }
+//   return otp7;
+// }
+
+// function sendMsg(mobile, otp) {
+//   const vonage = new Vonage({
+//     apiKey: process.env.VONAGE_API_KEY,
+//     apiSecret: process.env.VONAGE_API_SECRET
+//   })
+//   const from = "Vonage APIs"
+//   const to = "91"+mobile
+//   const text = `Your OTP for E-mart is ${otp}`
+//   async function sendSMS() {
+//     await vonage.sms.send({to, from, text})
+//         .then(resp => { console.log('Message sent successfully'); console.log(resp); })
+//         .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
+// }
+// return sendSMS();
+// }
+
 const saltRounds = 10;
-let otp7 = []
-function otpGenerate() {
-  const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-  console.log(otp);
-  // if(otp7.length){
-    // otp7 = []
-    // otp7.push(otp)
-  // }
-  // else{
-   // otp7=[]
-    otp7.push(otp)
-  // }
-  return otp7;
-}
-
-function sendMsg(mobile, otp) {
-  const vonage = new Vonage({
-    apiKey: process.env.VONAGE_API_KEY,
-    apiSecret: process.env.VONAGE_API_SECRET
-  })
-  const from = "Vonage APIs"
-  const to = "91"+mobile
-  const text = `Your OTP for E-mart is ${otp}`
-  async function sendSMS() {
-    await vonage.sms.send({to, from, text})
-        .then(resp => { console.log('Message sent successfully'); console.log(resp); })
-        .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
-}
-return sendSMS();
-}
-
 const signUp =async (req, res)=>{
   const existingUser = await userModel.findOne({email: req.body.email})
   if(existingUser){
@@ -71,7 +73,7 @@ const signUp =async (req, res)=>{
           createdAt:newUser.createdAt},
     });
   } catch (err) {
-    return res.status(500).send(err)
+    return res.status(500).send("Something Went wrong")
   }
 }
 
@@ -134,10 +136,8 @@ const sendOtp = async(req, res)=>{
     const otp = otpGenerate()
     let email = decodedToken.email
     let user =await userModel.find({email})
-    console.log(user);
     if(user){
       let mobile = user[0].mobile
-      console.log(mobile);
       await sendMsg(mobile, otp)
       return res.status(200).json({
         status: 200,
@@ -166,36 +166,9 @@ const getAll = async(req, res)=>{
 }
 
 const verifyOtp = async(req, res)=>{
-  // const secret1 = secret
-// let otp1 = otpGenerate()
-// console.log(otp1);
 const userDeatils = verifyToken(req, res);
 let email=userDeatils.email;
 let existInDb = await userModel.findOne({email});
-// const secret = speakeasy.generateSecret({length: 20});
-// const token1 = speakeasy.totp({
-//   secret: secret.base32,
-//   encoding: 'base32',
-// });
-  //console.log(token1);
-  // const vonage = new Vonage({
-  //   apiKey: process.env.VONAGE_API_KEY,
-  //   apiSecret: process.env.VONAGE_API_SECRET
-  // })
-  // const from = "Vonage APIs"
-  // const to = "91"+existInDb.mobile
-  // const text = `Your OTP for E-mart is ${token1}`
-  
-  // async function sendSMS() {
-  //     await vonage.sms.send({to, from, text})
-  //         .then(resp => { console.log('Message sent successfully'); console.log(resp); })
-  //         .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
-  // }
-  // sendSMS();
-  //res.send(existInDb)
- //let db = JSON.parse(existInDb)
-  //res.send(db)
-  console.log(email);
   if(!existInDb){
     return res.status(404).json({
       status: 404,
@@ -204,20 +177,9 @@ let existInDb = await userModel.findOne({email});
   }
 try {
   const token = req.body.otp;
-  console.log(token);
- // console.log(secret);
-  // const verified = speakeasy.totp.verify({
-  //   secret: secret1.base32,
-  //   encoding: 'base32',
-  //   token: token,
-  //   window: 1, // The number of windows of time to check
-  // });
-  //console.log(verified);
-  console.log(otp7[0]);
   if(token===otp7[0]){
     existInDb.verified=true,
     await existInDb.save();
-    console.log('kya haal hai');
     otp7 = []
    return res.status(200).json({
       status: 200,
@@ -225,7 +187,6 @@ try {
     })
   }
   else{
-    console.log('acha');
     return res.status(400).json({
       status:400,
       message: "Bad Request"
@@ -247,7 +208,7 @@ const updateUser = async(req, res)=>{
       message: `Updated ${req.body}`
     })
    } catch (error) {
-    
+    return res.status(500).send("Something Went Wrong")
    }
 }
 

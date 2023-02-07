@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const sendMail = async(email)=>{
-  // create a transporter object using a service of your choice
+
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -10,13 +10,12 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-// setup email data with unicode symbols
 let mailOptions = {
-  from: '"My Ecom" <myecom931@gmail.com>', // sender address
-  to: email, // list of receivers
-  subject: 'Your order has been successfully placed ✔', // Subject line
-  text: 'Order has been placed', // plain text body
-  html: '<b>Thanks for Ordering from us</b>' // html body
+  from: '"My Ecom" <myecom931@gmail.com>',
+  to: email,
+  subject: 'Your order has been successfully placed ✔',
+  text: 'Order has been placed',
+  html: '<b>Thanks for Ordering from us</b>'
 };
 
 // send mail with defined transport object
@@ -27,6 +26,5 @@ transporter.sendMail(mailOptions, (error, info) => {
   console.log('Message sent: %s', info);
 });
 }
-
 
 module.exports = sendMail
