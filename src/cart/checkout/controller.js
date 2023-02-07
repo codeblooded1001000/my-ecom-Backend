@@ -66,7 +66,7 @@ const getPurchaseDetails = async(req, res)=>{
     newPurchaseDetail.deliveryAddress = req.body.deliveryAddress
     await sendMail(email)
     await newPurchaseDetail.save()
-  //  await cartDetails[0].delete()
+    await cartDetails[0].delete()
     return res.status(200).json({
       status: 200,
       message: "Your purchase details",
