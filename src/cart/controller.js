@@ -1,16 +1,17 @@
+/***************************** HANDLED BUSINESS LOGIC IN THIS CONTROLLER FILE ***************************/
 const verifyToken = require('../middlewares/auth')
 const cartModel = require('./models')
 const productModel = require('../products/models')
 
 const addItemToCart = async(req, res)=>{
-  const decodedToken = verifyToken(req, res)
+  const decodedToken = verifyToken(req, res) // CALLING VERIFYTOKEN FUNCTION TO VERIFY IF THE USER IS VALID OR NOT
   try {
    const userId = decodedToken.userId
-   const cartAlreadyExist = await cartModel.find({userId})
-   if(!(cartAlreadyExist.length)){
+   const cartAlreadyExist = await cartModel.find({userId}) // CHECKS IF CART IS ALREADY ESISTED OR NOT IN THE DTABASE
+   if(!(cartAlreadyExist.length)){ //IF NOT PRESENT THEN CREATES A NEW CART
      const newCart = new cartModel()
-     const product = req.query.productId
-     const productInDb = await productModel.find({_id: product})
+     const product = req.query.productId // GET THE PRODUCTID FROM THE QUERY OF THE URL
+     const productInDb = await productModel.find({_id: product}) // FETCH THAT PRODUCT
      if(!(productInDb.length)){
       return res.status(404).json({
         status: 404,
@@ -18,9 +19,9 @@ const addItemToCart = async(req, res)=>{
       })
      }
      const items = newCart.items
-     items.push(productInDb[0])
+     items.push(productInDb[0]) // PUSHES THAT ITEM IN CART
      newCart.userId = userId
-     await newCart.save()
+     await newCart.save() // SAVES THE CART AFTER CREATING THAT
      return res.status(200).send(newCart)
    }
    else{

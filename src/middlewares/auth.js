@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+/***************************** WITH THE SIGNTOKEN TOKEN FUNCTION WE CAN CREATE A JWT TOKEN ***************************/
 function signToken(user){
   return jwt.sign(
     { userId: user.id, email: user.email },
@@ -9,6 +10,7 @@ function signToken(user){
   )
 }
 
+/***************************** WITH THIS VERIFY TOKEN FUNCTION WE CAN VERIFY IF THAT USER IS VALID OR NOT ***************************/
 function verifyToken(req, res){
   if(!(req.headers.authorization)){
     return res.status(404).json({success:false, message: "Error!Token was not provided."})

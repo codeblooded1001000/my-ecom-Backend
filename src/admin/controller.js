@@ -1,9 +1,11 @@
+/***************************** HANDLED BUSINESS LOGIC IN THIS CONTROLLER FILE ***************************/
 const verifyToken = require('../middlewares/auth')
 const discountModel = require('./models')
 const userModel = require('../signup/models')
 const PurchaseDetails = require('../cart/checkout/models')
 const productModel = require('../products/models')
 
+/***************************** CHECK ADMIN FUNCTION ***************************/
 const checkAdmin = async(token)=>{
   let email = token.email
   let user = await userModel.findOne({email})
@@ -11,6 +13,7 @@ const checkAdmin = async(token)=>{
   return (user.role=='ADMIN') ? flag = true: flag
 }
 
+/***************************** GENERATE DISCOUNT CODE FUNCTION, ONLY ADMIN IS AUTHORIZED ***************************/
 const generateDiscountCode = async(req, res)=>{
   const decodedToken = verifyToken(req, res)
   let flag = await checkAdmin(decodedToken);
@@ -21,12 +24,12 @@ const generateDiscountCode = async(req, res)=>{
     })
   }
   try {
-    const newDiscountCode = new discountModel()
-    newDiscountCode.orderNumber = req.body.orderNumber
+    const newDiscountCode = new discountModel() // CRRATES NEW DISCOUNT DETAILS
+    newDiscountCode.orderNumber = req.body.orderNumber // AT WHAT ORDER NUMBER, USER CAN AVAIL THAT COUPON
     newDiscountCode.discountPercentage = req.body.discountPercentage
-    const couponCode = Math.random().toString(36).toUpperCase().substring(2, 15)
+    const couponCode = Math.random().toString(36).toUpperCase().substring(2, 15) // LOGIC TO GENERTAE RANDOM COUPON WITH CHARS AND NUMBERS
     newDiscountCode.discountCoupon = couponCode
-    await newDiscountCode.save()
+    await newDiscountCode.save() // SAVE THAT DISCOUNT DETAILS IN THE DATABSE
     return res.status(200).json({
       status: 200,
       data: newDiscountCode
@@ -35,7 +38,7 @@ const generateDiscountCode = async(req, res)=>{
     return res.status(500).send("Something Went Wrong")
   }
 }
-
+/***************************** GET TOTAL PURCHASE DETAILS FROM THE DATABASE, ONLY ADMIN IS AUTHORIZED ***************************/
 const getTotalPurchaseDetails = async(req, res)=>{
   const decodedToken = verifyToken(req, res)
   let flag = await checkAdmin(decodedToken);
@@ -46,13 +49,12 @@ const getTotalPurchaseDetails = async(req, res)=>{
     })
   }
   try {
-    const purchaseDetails = await PurchaseDetails.find({})
-
+    const purchaseDetails = await PurchaseDetails.find({}) // FETCH ALL PURCHASE DETAILS
     let totalAmount = 0;
     let discountAmount = 0;
     let countOfItemsPurchased = 0;
     let discountCouponCodes = [];
-    for(var i = 0; i<purchaseDetails.length; i++){
+    for(var i = 0; i<purchaseDetails.length; i++){ // LOOP TO ADD TOTAL AMOUNT, DISCOUNT AMOUNT, COUPON CODE USED AND COUNT OF ITEMS PURCHASED
       totalAmount += purchaseDetails[i].totalAmount;
       discountAmount += purchaseDetails[i].discountedAmount;
       countOfItemsPurchased += purchaseDetails[i].itemDetails.length;

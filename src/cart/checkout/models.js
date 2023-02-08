@@ -1,3 +1,5 @@
+/***************************** DEFINED SCHEMAS, IN MODELS FILE FOR THE PARTICULAR FILE WITH THE SUITABLE CONDITIONS ***************************/
+
 const mongoose = require('mongoose')
 
 const purchaseSchema = new mongoose.Schema({

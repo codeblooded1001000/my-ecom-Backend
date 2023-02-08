@@ -1,3 +1,5 @@
+/***************************** DEFINED SCHEMAS, IN MODELS FILE FOR THE PARTICULAR FILE WITH THE SUITABLE CONDITIONS ***************************/
+
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -30,6 +32,10 @@ const UserSchema = new Schema({
     type : String,
     enum: ['USER', 'ADMIN'],
     default: 'USER'
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
 },
 { versionKey: false });

@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 const port = 3000 || process.env.PORT;
 
+/********************************************* CONNECTED APPLICATION WITH THE DATABASE ******************************************/
 mongoose.connect(
   process.env.URI_FOR_DB, 
   {
@@ -25,6 +26,7 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
+/********************************************* ROUTING ******************************************/
 app.use('/users',signupRoutes);
 app.use('/products',productRoutes);
 app.use('/carts',cartRoutes);
@@ -32,7 +34,7 @@ app.use('/checkout',checkoutRoute);
 app.use('/admin',adminRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello from E-mart Server!')
 })
 
 app.listen(port, () => {
