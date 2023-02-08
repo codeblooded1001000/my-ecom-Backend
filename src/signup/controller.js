@@ -2,7 +2,6 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const bcrypt = require("bcryptjs");
-// const verifyToken = require('../middlewares/auth');
 const userModel = require("./models");
 const {signToken, verifyToken} = require('../middlewares/auth')
 // const {Vonage} = require('@vonage/server-sdk')
