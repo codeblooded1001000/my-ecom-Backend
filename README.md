@@ -1,6 +1,6 @@
 # E-mart
 
-The e_Mart Backend is a RESTful API built to support the e_Mart online marketplace application.
+The E-mart Backend is a RESTful API built to support the E-mart online marketplace application.
 
 ## Features
 
@@ -16,14 +16,15 @@ The e_Mart Backend is a RESTful API built to support the e_Mart online marketpla
 
 ### Technology Stack
 
-* [Node.js](https://nodejs.org/en/download/)
+* ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
-* [MongoDB](https://docs.mongodb.com/manual/installation/)
+* ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
-* [Express.js](https://expressjs.com/)
+* ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 
-* [npm](https://www.npmjs.com/)
-* [JWT](https://jwt.io/)
+* ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+* ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+* ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
 ## Getting Started
 
