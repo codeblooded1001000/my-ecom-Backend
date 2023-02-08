@@ -1,6 +1,6 @@
 /***************************** HANDLED BUSINESS LOGIC IN THIS CONTROLLER FILE ***************************/
 const productModel = require('./models')
-const verifyToken = require('../middlewares/auth');
+const {verifyToken} = require('../middlewares/auth');
 const userModel = require('../signup/models')
 
 const checkAdmin = async(token, res)=>{

@@ -2,9 +2,9 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const bcrypt = require("bcryptjs");
-const verifyToken = require('../middlewares/auth');
+// const verifyToken = require('../middlewares/auth');
 const userModel = require("./models");
-const {signToken} = require('../middlewares/auth')
+const {signToken, verifyToken} = require('../middlewares/auth')
 // const {Vonage} = require('@vonage/server-sdk')
 // const otpGenerator = require('otp-generator')
 
@@ -119,22 +119,22 @@ const getAll = async(req, res)=>{
 
 /***************************** UPDATE FUNCTION, IF USER WANTS TO UPDATE HIS/HER ANY FIELD ***************************/
 const updateUser = async(req, res)=>{
-  const decodedToken = verifyToken(req, res)
-  const email = decodedToken.email
+  // const _id = decodedToken.userId
    try {
-    const user = await userModel.findOne({email})
+    const _id = req.params.id
+    const user = await userModel.findOne({_id})
     user.updatedAt = new Date()
     await user.update(req.body) // UPDATE METHOD SO THAT USER GETS SUCCESSFULLY UPDATED IN THE DATABSE
     return res.status(200).json({
       status:200,
-      message: `Updated ${req.body}`
+      message: "Successfully updated",
     })
    } catch (error) {
     return res.status(500).send("Something Went Wrong")
    }
 }
 
-module.exports = {signUp, login, sendOtp, getAll, verifyOtp, updateUser}
+module.exports = {signUp, login, getAll, updateUser}
 
 
 

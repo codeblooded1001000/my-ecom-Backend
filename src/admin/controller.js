@@ -1,5 +1,5 @@
 /***************************** HANDLED BUSINESS LOGIC IN THIS CONTROLLER FILE ***************************/
-const verifyToken = require('../middlewares/auth')
+const {verifyToken} = require('../middlewares/auth')
 const discountModel = require('./models')
 const userModel = require('../signup/models')
 const PurchaseDetails = require('../cart/checkout/models')

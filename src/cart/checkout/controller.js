@@ -2,7 +2,7 @@
 const cartModel =  require('../models');
 const purchaseDetailsModel = require('./models')
 const userModel = require('../../signup/models')
-const verifyToken = require('../../middlewares/auth');
+const {verifyToken} = require('../../middlewares/auth');
 const discountModel =  require('../../admin/models')
 const sendMail = require('../../mail/sendMail')
 
