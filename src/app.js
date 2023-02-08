@@ -35,6 +35,43 @@ app.use('/admin',adminRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello from E-mart Server!')
+});
+
+
+/********************************************* IF THE URL PROVIDED IS NOT CORRECT THEN THROW THESE ******************************************/
+app.get('*', (req, res)=>{
+  res.status(404).json({
+    status: 404,
+    message: "Page not found"
+  })
+})
+
+app.post('*', (req, res)=>{
+  res.status(404).json({
+    status: 404,
+    message: "Page not found"
+  })
+})
+
+app.patch('*', (req, res)=>{
+  res.status(404).json({
+    status: 404,
+    message: "Page not found"
+  })
+})
+
+app.put('*', (req, res)=>{
+  res.status(404).json({
+    status: 404,
+    message: "Page not found"
+  })
+})
+
+app.delete('*', (req, res)=>{
+  res.status(404).json({
+    status: 404,
+    message: "Page not found"
+  })
 })
 
 app.listen(port, () => {
