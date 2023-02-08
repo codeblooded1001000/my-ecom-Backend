@@ -92,3 +92,11 @@ API documentation is available on this link [E-mart Docs](https://documenter.get
 `POST admin/generateDiscountCode`: Generate a unique discount coupon(Only the admin is authorized).
 
 `GET admin/getTotalPurchaseDetails`: Get total purchase details i.e. count of items purchased, total purchase amount, list of discount codes and total discount amount(Only the admin is authorized).
+
+## Demo
+
+
+
+
+https://user-images.githubusercontent.com/110348583/217510610-827445d4-5d8d-41b6-b035-f117be55c7e9.mp4
+
