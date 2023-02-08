@@ -43,7 +43,7 @@ const signUp =async (req, res)=>{
 /***************************** LOGIN FUNCTION, IF THE USER IS ALREADY PRESENT IN OUR DATABASE ***************************/
 const login = async (req, res) => {
   let { email, password } = req.body; 
-  let existingUser= await userModel.findOne({ email: email });; //CHECKS FOR THE EXISTING USER IN OUR DATABASE
+  let existingUser= await userModel.findOne({ email: email });//CHECKS FOR THE EXISTING USER IN OUR DATABASE
   if (!existingUser) {
     return res.status(404).json({
       status: 404,
