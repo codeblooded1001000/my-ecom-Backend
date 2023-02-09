@@ -63,7 +63,7 @@ const getTotalPurchaseDetails = async(req, res)=>{
       }
     }
     res.status(200).json({
-      sttatus: 200,
+      status: 200,
       message: "Total Purchase details",
       totalAmount,
       discountAmount,
