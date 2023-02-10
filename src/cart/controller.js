@@ -46,6 +46,4 @@ const addItemToCart = async(req, res)=>{
   }
 }
 
-
-
 module.exports = addItemToCart
