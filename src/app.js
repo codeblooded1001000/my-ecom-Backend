@@ -5,6 +5,7 @@ const productRoutes = require("./products/routes");
 const cartRoutes =require('./cart/routes')
 const checkoutRoute =require('./cart/checkout/routes');
 const adminRoutes = require('./admin/routes')
+const categoryRoutes = require('./productCategory/routes')
 require('dotenv').config();
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use('/products',productRoutes);
 app.use('/carts',cartRoutes);
 app.use('/checkout',checkoutRoute);
 app.use('/admin',adminRoutes);
+app.use('/categories', categoryRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello from E-mart Server!')

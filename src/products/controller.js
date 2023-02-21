@@ -32,4 +32,29 @@ const addProducts = async(req, res)=>{
   }
 }
 
-module.exports = addProducts
+const updateProductById = async (req, res)=>{
+  const decodedToken = verifyToken(req, res)
+  let flag = await checkAdmin(decodedToken, res);// CHECKS FOR THE ADMIN
+  if(!flag){
+    return res.status(403).json({
+      status: 403,
+      message : "You are not allowed to perform this operation"
+    })
+  }
+  try {
+    const productId = req.params.id;
+    const product = await productModel.find({_id: productId});
+    await product[0].updateOne(req.body)
+    return res.status(200).json({
+      status: 200,
+      message: "Product Detail updated"
+    })
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong!"
+    })
+  }
+}
+
+module.exports = {addProducts, updateProductById}
