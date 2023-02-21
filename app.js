@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const signupRoutes = require("./signup/routes");
-const productRoutes = require("./products/routes");
-const cartRoutes =require('./cart/routes')
-const checkoutRoute =require('./cart/checkout/routes');
-const adminRoutes = require('./admin/routes')
-const categoryRoutes = require('./productCategory/routes')
+const signupRoutes = require("./src/signup/routes");
+const productRoutes = require("./src/products/routes");
+const cartRoutes =require('./src/cart/routes')
+const checkoutRoute =require('./src/cart/checkout/routes');
+const adminRoutes = require('./src/admin/routes')
+const categoryRoutes = require('./src/productCategory/routes')
 require('dotenv').config();
 const app = express();
 app.use(express.json());
