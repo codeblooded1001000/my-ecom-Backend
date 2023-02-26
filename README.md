@@ -43,7 +43,7 @@ $ npm install
 
 3. Start the application:
 ```shell
-$ npm start
+$ npm run dev
 ```
 or
 
