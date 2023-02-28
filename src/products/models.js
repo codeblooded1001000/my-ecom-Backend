@@ -24,6 +24,12 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String
+  },
+  createdBy: {
+    type: String
+  },
+  updatedBy: {
+    type: String
   }
 },
 {versionKey: false})

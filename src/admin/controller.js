@@ -3,7 +3,7 @@ const {verifyToken} = require('../middlewares/auth')
 const discountModel = require('./models')
 const userModel = require('../signup/models')
 const PurchaseDetails = require('../cart/checkout/models')
-const productModel = require('../products/models')
+// const productModel = require('../products/models')
 
 /***************************** CHECK ADMIN FUNCTION ***************************/
 const checkAdmin = async(token)=>{
