@@ -22,17 +22,16 @@ db.once("open", function() {
 });
 
 /********************************************* ROUTING ******************************************/
-app.use('/users', router.signupRoutes);
-app.use('/products', router.productRoutes);
-app.use('/carts', router.cartRoutes);
-app.use('/checkout', router.checkoutRoute);
-app.use('/admin', router.adminRoutes);
-app.use('/categories', router.categoryRoutes);
+
+for (var property in router) {
+  if (router.hasOwnProperty(property)) {
+      app.use(property, router[property]);
+  }
+}
 
 app.get('/', (req, res) => {
     res.send('Hello from E-mart Server!')
 });
-
 
 /********************************************* IF THE URL PROVIDED IS NOT CORRECT THEN THROW THESE ******************************************/
 app.get('*', (req, res) => {

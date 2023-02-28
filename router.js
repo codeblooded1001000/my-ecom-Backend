@@ -6,11 +6,11 @@ const adminRoutes = require('./src/admin/routes')
 const categoryRoutes = require('./src/productCategory/routes')
 
 const router = {
-    signupRoutes,
-    productRoutes,
-    cartRoutes,
-    checkoutRoute,
-    adminRoutes,
-    categoryRoutes
+    '/users': signupRoutes,
+    '/products': productRoutes,
+    '/carts': cartRoutes,
+    '/checkout': checkoutRoute,
+    '/admin': adminRoutes,
+    '/categories': categoryRoutes
 };
 module.exports = router
