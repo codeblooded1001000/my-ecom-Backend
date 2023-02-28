@@ -152,20 +152,20 @@ const deleteUser = async(req, res) => {
 
                 return res.status(200).json({
                     status: 200,
-                    message: `${user.name} bhadwa ab nahi raha`,
+                    message: `User named ${user.name} Deleted Successfully`,
                     data: user
                 })
             } else {
                 return res.status(403).json({
                     status: 403,
-                    message: "Aukaat me reh bhadwe"
+                    message: "You don't have permission to perform this action"
                 })
             }
 
         } catch (error) {
             return res.status(500).json({
                 status: 500,
-                message: "AUGHHHHHH!!!!!!!"
+                message: "Something went wrong"
             })
         }
 
