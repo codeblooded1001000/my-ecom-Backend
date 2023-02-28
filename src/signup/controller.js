@@ -126,10 +126,11 @@ const updateUser = async(req, res) => {
             const user = await userModel.findOne({ _id })
             user.updatedAt = new Date()
             await user.updateOne(req.body) // UPDATE METHOD SO THAT USER GETS SUCCESSFULLY UPDATED IN THE DATABSE
+            let data = await userModel.findOne({ _id })
             return res.status(200).json({
                 status: 200,
                 message: "Successfully updated",
-                data: user
+                data
             })
         } catch (error) {
             return res.status(500).send("Something Went Wrong")
