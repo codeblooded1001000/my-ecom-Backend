@@ -1,81 +1,81 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const signupRoutes = require("./src/signup/routes");
-const productRoutes = require("./src/products/routes");
-const cartRoutes =require('./src/cart/routes')
-const checkoutRoute =require('./src/cart/checkout/routes');
-const adminRoutes = require('./src/admin/routes')
-const categoryRoutes = require('./src/productCategory/routes')
+const router = require('./router.ts')
 require('dotenv').config();
 const app = express();
 app.use(express.json());
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT; //5000
 
 /********************************************* CONNECTED APPLICATION WITH THE DATABASE ******************************************/
 mongoose.connect(
-  process.env.URI_FOR_DB, 
-  {
-    useNewUrlParser: true,
-   //useFindAndModify: false,
-    useUnifiedTopology: true
-  }
+    process.env.URI_FOR_DB, {
+        useNewUrlParser: true,
+        //useFindAndModify: false,
+        useUnifiedTopology: true
+    }
 );
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
+db.once("open", function() {
+    console.log("Connected successfully");
 });
 
 /********************************************* ROUTING ******************************************/
-app.use('/users',signupRoutes);
-app.use('/products',productRoutes);
-app.use('/carts',cartRoutes);
-app.use('/checkout',checkoutRoute);
-app.use('/admin',adminRoutes);
-app.use('/categories', categoryRoutes);
+app.use('/users', router.signupRoutes);
+app.use('/products', router.productRoutes);
+app.use('/carts', router.cartRoutes);
+app.use('/checkout', router.checkoutRoute);
+app.use('/admin', router.adminRoutes);
+app.use('/categories', router.categoryRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Hello from E-mart Server!')
+    res.send('Hello from E-mart Server!')
 });
 
 
 /********************************************* IF THE URL PROVIDED IS NOT CORRECT THEN THROW THESE ******************************************/
-app.get('*', (req, res)=>{
-  res.status(404).json({
-    status: 404,
-    message: "Page not found"
-  })
+app.get('*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    })
 })
 
-app.post('*', (req, res)=>{
-  res.status(404).json({
-    status: 404,
-    message: "Page not found"
-  })
+app.post('*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    })
 })
 
-app.patch('*', (req, res)=>{
-  res.status(404).json({
-    status: 404,
-    message: "Page not found"
-  })
+app.patch('*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    })
 })
 
-app.put('*', (req, res)=>{
-  res.status(404).json({
-    status: 404,
-    message: "Page not found"
-  })
+app.put('*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    })
 })
 
-app.delete('*', (req, res)=>{
-  res.status(404).json({
-    status: 404,
-    message: "Page not found"
-  })
+app.delete('*', (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    })
 })
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
-})
+        console.log(`App listening on port ${port}`)
+    })
+    // const signupRoutes = require("./src/signup/routes");
+    // const productRoutes = require("./src/products/routes");
+    // const cartRoutes = require('./src/cart/routes')
+    // const checkoutRoute = require('./src/cart/checkout/routes');
+    // const adminRoutes = require('./src/admin/routes')
+    // const categoryRoutes = require('./src/productCategory/routes')
