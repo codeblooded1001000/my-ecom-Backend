@@ -23,9 +23,9 @@ db.once("open", function() {
 
 /********************************************* ROUTING ******************************************/
 
-for (var property in router) {
-  if (router.hasOwnProperty(property)) {
-      app.use(property, router[property]);
+for (var route in router) {
+  if (router.hasOwnProperty(route)) {
+      app.use(route, router[route]);
   }
 }
 
