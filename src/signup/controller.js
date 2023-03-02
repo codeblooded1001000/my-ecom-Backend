@@ -9,11 +9,17 @@ const { signToken, verifyToken } = require('../middlewares/auth')
 
 /***************************** SIGNUP FUNCTION, IF THE USER IS NEW ***************************/
 const signUp = async(req, res) => {
+    // console.log(req.body);
     const existingUser = await userModel.findOne({ email: req.body.email }) // CHECKS FOR THE EXISTING USER IN OUR DATABASE
     if (existingUser) {
         return res.status(400).json({
             status: 400,
             message: "Account Already exists"
+        });
+    } else if (req.body.name.length === 0 || req.body.age < 1 || req.body.email.includes('@') === false) {
+        return res.status(400).json({
+            status: 400,
+            message: "incorrect credentials"
         });
     }
     try {
