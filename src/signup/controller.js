@@ -16,7 +16,11 @@ const signUp = async(req, res) => {
             status: 400,
             message: "Account Already exists"
         });
-    } else if (req.body.name.length === 0 || req.body.age < 1 || req.body.email.includes('@') === false) {
+    } else if (
+        req.body.name.length === 0 ||
+        req.body.age < 1 ||
+        req.body.email.includes('@') === false
+    ) {
         return res.status(400).json({
             status: 400,
             message: "incorrect credentials"
