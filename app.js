@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require("mongoose");
 const router = require('./router.js')
 require('dotenv').config();
@@ -6,6 +7,7 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT; //5000
 
+app.use(cors());
 /********************************************* CONNECTED APPLICATION WITH THE DATABASE ******************************************/
 mongoose.connect(
     process.env.URI_FOR_DB, {
@@ -18,19 +20,20 @@ mongoose.connect(
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function() {
-    console.log("Connected successfully");
+    console.log("DB Connected successfully");
 });
 
 /********************************************* ROUTING ******************************************/
 
 for (var route in router) {
-  if (router.hasOwnProperty(route)) {
-      app.use(route, router[route]);
-  }
+    if (router.hasOwnProperty(route)) {
+        app.use(route, router[route]);
+    }
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello from E-mart Server!')
+    const ipAddress = req.ip
+    res.send('<h1>Hello from My E-com Server! ✌️</h1>')
 });
 
 /********************************************* IF THE URL PROVIDED IS NOT CORRECT THEN THROW THESE ******************************************/
