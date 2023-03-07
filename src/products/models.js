@@ -1,44 +1,64 @@
 /***************************** DEFINED SCHEMAS, IN MODELS FILE FOR THE PARTICULAR FILE WITH THE SUITABLE CONDITIONS ***************************/
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
-    price: {
-        type: Number,
-        required: true,
+    brand: {
+      type: String,
+      required: true,
     },
     images: {
-        type: Array
+      type: Array,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
+    variants: {
+      type: Array,
     },
     specifications: {
-        type: Array,
-        required: true
+      type: Array,
+      required: true,
+    },
+    similarProducts: {
+      type: Array,
+      required: true,
+    },
+    FAQ: {
+      type: Array,
+      required: true,
     },
     category: {
-        type: String,
-        required: true
-    },
-    color: {
-        type: String,
-    },
-    currency: {
-        type: String,
-        required: true,
-    },
-    createdBy: {
-        type: String
-    },
-    updatedBy: {
-        type: String
+      type: String,
+      required: true,
     },
     reviews: {
-        type: Array
-    }
-}, { versionKey: false })
+      type: Array,
+      required: true,
+    },
+    createdBy: {
+      type: String,
+    },
+    updatedBy: {
+      type: String,
+    },
+  },
+  { versionKey: false }
+);
 
 const Products = mongoose.model("Products", productSchema);
-module.exports = Products
+module.exports = Products;
