@@ -1,6 +1,6 @@
-# E-mart
+# My E-com
 
-The E-mart Backend is a RESTful API built to support the E-mart online marketplace application.
+The My E-com Backend is a RESTful API built to support the My E-com online marketplace application.
 
 ## Features
 
@@ -65,7 +65,7 @@ $ npx nodemon app.js
 4. Access the API at `http://localhost:3000/`
 # Documentation
 
-API documentation is available on this link [E-mart Docs](https://documenter.getpostman.com/view/24360292/2s935pr41m).
+API documentation is available on this link [My E-com Docs](https://documenter.getpostman.com/view/24360292/2s935pr41m).
 ## API Endpoints
 
 #### Users Endpoints
