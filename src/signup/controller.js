@@ -200,13 +200,13 @@ const deleteUserByEmail = async(req, res) => {
 
             return res.status(200).json({
                 status: 200,
-                message: `${user.name} bhadwa ab nahi raha`,
+                message: `${user.name} deleted successfully`,
                 data: user
             })
         } else {
             return res.status(400).json({
                 status: 400,
-                message: "Teri maa ki chut lawde jaa re gaand ke"
+                message: "User not found"
             })
         }
 
@@ -215,7 +215,7 @@ const deleteUserByEmail = async(req, res) => {
     } catch (error) {
         return res.status(500).json({
             status: 500,
-            message: "AUGHHHHHH!!!!!!!"
+            message: "Internal server error"
         })
     }
 
