@@ -13,16 +13,15 @@ const getDiscount = (totalPrice, discountCode, req)=> {
 
 /***************************** FUNCTION TO CHECKOUT AND GET THE PURCHASE DETAILS ***************************/
 const getPurchaseDetails = async(req, res)=>{
-  const decodedToken =verifyToken(req, res)
   try {
     const newPurchaseDetail = new purchaseDetailsModel() // CREATS A NEW PURCHASE DETAIL
-    let userId = decodedToken.userId;
-    let user = await userModel.findOne({_id: userId}) // FETCH THE USER DETAILS SO THAT AFTER CHECKING OUT WE HAVE PURCHASE DETAILS MAPPED WITH THAT PARTICULAR USER IN DATABASE
+    let {userId} = req.user;
+    let user = await userModel.findById(userId) // FETCH THE USER DETAILS SO THAT AFTER CHECKING OUT WE HAVE PURCHASE DETAILS MAPPED WITH THAT PARTICULAR USER IN DATABASE
     let email = user.email
     let contact = user.mobile
     let userName = user.name
-    let cartDetails = await cartModel.find({userId}); // CHECKS FOR THE CART, IF THAT PARTICULAR USER HAVE ITEMS IN HIS/HER CART
-    if(cartDetails.length==0){
+    let cartDetails = await cartModel.findOne({userId}); // CHECKS FOR THE CART, IF THAT PARTICULAR USER HAVE ITEMS IN HIS/HER CART
+    if(!cartDetails){
       return res.status(404).json({
         status: 404,
         message: "Cart Not found"
@@ -33,15 +32,15 @@ const getPurchaseDetails = async(req, res)=>{
     let coupon;
     if((getPurchaseDetail.length)%10==9 || getPurchaseDetail.length==9){ // CHECKS IF USER IS SATISFYING THE DISCOUNT ELIGIBILITY, SO THAT HE/SHE CAN AVAIL THAT COUPON IN HES HER NEXT PURCHASE
       flag = true
-      let discountDetails = await discountModel.find({orderNumber: 10}) // FETCHES THE DISCOUNT COUPON
-      coupon = discountDetails[0].discountCoupon
+      let discountDetails = await discountModel.findOne({orderNumber: 10}) // FETCHES THE DISCOUNT COUPON
+      coupon = discountDetails.discountCoupon
     }
-    let items = cartDetails[0].items;
+    let items = cartDetails.items;
     let totalPrice = 0;
     for(var i =0; i<items.length; i++){ // ADDING THE PRICE OF THE ITEMS IN CART
       totalPrice += items[i].price;
     }
-    newPurchaseDetail.itemDetails = cartDetails[0].items
+    newPurchaseDetail.itemDetails = cartDetails.items
     newPurchaseDetail.userId = userId
     newPurchaseDetail.userContact.email = email
     newPurchaseDetail.userContact.mobile = contact
@@ -56,7 +55,8 @@ const getPurchaseDetails = async(req, res)=>{
       discountCode = discountDetails.discountCoupon
       discountedPrice = getDiscount(totalPrice, discountCode, req) // CALLING GET DISCOUNT FUNCTION SO THAT HE/SHE CAN HAVE VALID DISCOUNT
       newPurchaseDetail.discountCouponUsed = discountCode
-      if(discountedPrice==0) return res.status(400).json({ // CHECKS IF COUPON IS VALID OR NOT
+      if(discountedPrice==0) 
+      return res.status(400).json({ // CHECKS IF COUPON IS VALID OR NOT
         status: 400,
         message: "Invalid Coupon Code"
       })
@@ -68,7 +68,7 @@ const getPurchaseDetails = async(req, res)=>{
     newPurchaseDetail.deliveryAddress = req.body.deliveryAddress // PROVIDE DELIVERY ADDRESS IN THE BODY
     await sendMail(email) // SENDS EMAIL TO THAT USER'S EMAIL ID AFTER CHECKOUT
     await newPurchaseDetail.save()
-    await cartDetails[0].delete() // DELETE THAT PARTICULAR CART AFTER PURCHASE
+    await cartDetails.delete() // DELETE THAT PARTICULAR CART AFTER PURCHASE
     return res.status(200).json({
       status: 200,
       message: "Your purchase details",

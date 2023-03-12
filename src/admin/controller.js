@@ -5,24 +5,9 @@ const userModel = require('../signup/models')
 const PurchaseDetails = require('../cart/checkout/models')
 // const productModel = require('../products/models')
 
-/***************************** CHECK ADMIN FUNCTION ***************************/
-const checkAdmin = async(token)=>{
-  let email = token.email
-  let user = await userModel.findOne({email})
-  let flag =false
-  return (user.role=='ADMIN') ? flag = true: flag
-}
 
 /***************************** GENERATE DISCOUNT CODE FUNCTION, ONLY ADMIN IS AUTHORIZED ***************************/
 const generateDiscountCode = async(req, res)=>{
-  const decodedToken = verifyToken(req, res)
-  let flag = await checkAdmin(decodedToken);
-  if(!flag){
-    return res.status(403).json({
-      status: 403,
-      message : "You are not allowed to perform this operation"
-    })
-  }
   try {
     const newDiscountCode = new discountModel() // CRRATES NEW DISCOUNT DETAILS
     newDiscountCode.orderNumber = req.body.orderNumber // AT WHAT ORDER NUMBER, USER CAN AVAIL THAT COUPON
@@ -40,14 +25,6 @@ const generateDiscountCode = async(req, res)=>{
 }
 /***************************** GET TOTAL PURCHASE DETAILS FROM THE DATABASE, ONLY ADMIN IS AUTHORIZED ***************************/
 const getTotalPurchaseDetails = async(req, res)=>{
-  const decodedToken = verifyToken(req, res)
-  let flag = await checkAdmin(decodedToken);
-  if(!flag){
-    return res.status(403).json({
-      status: 403,
-      message : "You are not allowed to perform this operation"
-    })
-  }
   try {
     const purchaseDetails = await PurchaseDetails.find({}) // FETCH ALL PURCHASE DETAILS
     let totalAmount = 0;
