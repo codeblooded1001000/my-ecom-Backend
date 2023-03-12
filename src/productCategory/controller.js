@@ -19,7 +19,6 @@ const addNewCategory = async (req, res)=>{
       message: "Created a new cateogory",
       data: newCategory
     })
-    // if()
    } catch (error) {
     res.status(500).json({
       status: 500,

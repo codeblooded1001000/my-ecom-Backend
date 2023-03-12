@@ -4,38 +4,38 @@ const cartModel = require('./models')
 const productModel = require('../products/models')
 
 const addItemToCart = async(req, res)=>{
-  const decodedToken = verifyToken(req, res) // CALLING VERIFYTOKEN FUNCTION TO VERIFY IF THE USER IS VALID OR NOT
   try {
-   const userId = decodedToken.userId
-   const cartAlreadyExist = await cartModel.find({userId}) // CHECKS IF CART IS ALREADY ESISTED OR NOT IN THE DTABASE
-   if(!(cartAlreadyExist.length)){ //IF NOT PRESENT THEN CREATES A NEW CART
-     const newCart = new cartModel()
-     const product = req.query.productId // GET THE PRODUCTID FROM THE QUERY OF THE URL
-     const productInDb = await productModel.find({_id: product}) // FETCH THAT PRODUCT
-     if(!(productInDb.length)){
+   const cartAlreadyExist = await cartModel.findById(req.user.userId) // CHECKS IF CART IS ALREADY ESISTED OR NOT IN THE DTABASE
+   if(!cartAlreadyExist){ //IF NOT PRESENT THEN CREATES A NEW CART
+     const newCart = new cartModel()// GET THE PRODUCTID FROM THE QUERY OF THE URL
+     const productInDb = await productModel.findById(req.query.productId) // FETCH THAT PRODUCT
+     if(!productInDb){
       return res.status(404).json({
         status: 404,
         message: "Product not found"
       })
      }
      const items = newCart.items
-     items.push(productInDb[0]) // PUSHES THAT ITEM IN CART
-     newCart.userId = userId
+     items.push(productInDb) // PUSHES THAT ITEM IN CART
+     newCart.userId = req.user.userId
      await newCart.save() // SAVES THE CART AFTER CREATING THAT
-     return res.status(200).send(newCart)
+     return res.status(200).json({
+      success: true,
+      status: 201, 
+      data: newCart
+    })
    }
    else{
-     const product = req.query.productId
-       const productInDb = await productModel.find({_id: product})
-       if(productInDb.length==0){
+       const productInDb = await productModel.findById(req.query.productId)
+       if(!productInDb){
         return res.status(404).json({
           status: 404,
           message: "Product not found"
         })
        }
-       const items = cartAlreadyExist[0].items
-       items.push(productInDb[0])
-       await cartAlreadyExist[0].save()
+       const items = cartAlreadyExist.items
+       items.push(productInDb)
+       await cartAlreadyExist.save()
        return res.status(200).send(cartAlreadyExist)
    }
   } catch (error) {
