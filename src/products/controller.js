@@ -55,26 +55,29 @@ const addMultipleProducts = async(req, res) => {
             productsToBeAdded.push({...reqProduct, createdBy: email })
         })
 
-        await productModel.insertMany(productsToBeAdded)
+    await productModel.insertMany(productsToBeAdded);
 
-        //BINDING PRODUCT TO CATEGORY DB
-        for (i in productsToBeAdded) {
-            await categoryModel.findOneAndUpdate({ categoryName: productsToBeAdded[i].category }, { $push: { products: productsToBeAdded[i] } });
-        }
+    //BINDING PRODUCT TO CATEGORY DB
+    for (i in productsToBeAdded) {
+      await categoryModel.findOneAndUpdate(
+        { categoryName: productsToBeAdded[i].category },
+        { $push: { products: productsToBeAdded[i] } }
+      );
+    }
 
-        return res.status(200).json({
-            status: 200,
-            message: "Following data inserted successfully",
-            data: productsToBeAdded
-        })
+    return res.status(200).json({
+      status: 200,
+      message: "Following data inserted successfully",
+      data: productsToBeAdded,
+    });
 
-        // const userDetails = await userModel.find({ email: createdBy });
-        // newProduct.createdBy = userDetails[0].name;
-        // await newProduct.save(); // SAVE METHOD TO SAVE PRODUCT IN DATABASE
+    // const userDetails = await userModel.find({ email: createdBy });
+    // newProduct.createdBy = userDetails[0].name;
+    // await newProduct.save(); // SAVE METHOD TO SAVE PRODUCT IN DATABASE
 
-        // // find({ categoryName: newProduct.category })
+    // // find({ categoryName: newProduct.category })
 
-        // console.log(productCategory);
+    // console.log(productCategory);
 
         //return res.send(newProduct);
     } catch (error) {
@@ -112,4 +115,53 @@ const updateProductById = async(req, res) => {
     }
 };
 
-module.exports = { addProducts, addMultipleProducts, updateProductById, getAll };
+/*********************************************************DANGER ZONE DO NOT ENTER**********************************************************/
+
+// const emptyProductsDB = async (req, res) => {
+//   const decodedToken = await verifyToken(req, res);
+//   let isAdmin = await checkAdmin(decodedToken, res);
+//   let name = req.body.name;
+
+//   if (isAdmin === false) {
+//     return res.status(403).json({
+//       status: 403,
+//       message: "You are not allowed to perform this operation",
+//     });
+//   }
+//   try {
+//     // console.log("this is inside promise body");
+//     const x = await productModel.deleteMany({ filed1: "value" });
+//     const y = await productModel.find();
+
+//     if (y.length === 0) {
+//       console.log(x, "after deletion");
+//       return res.status(200).json({
+//         status: 200,
+//         message: "products deleted successfully",
+//         result: x,
+//       });
+//     } else {
+//       console.log("Error in else block");
+//       return res.status(500).json({
+//         status: 500,
+//         message: "Something went wrong!",
+//       });
+//     }
+//   } catch (error) {
+//     console.log("Error in catch block");
+
+//     return res.status(500).json({
+//       status: 500,
+//       message: "Something went wrong!",
+//       error: error.message,
+//     });
+//   }
+// };
+
+module.exports = {
+  addProducts,
+  addMultipleProducts,
+  updateProductById,
+  getAll,
+  //   emptyProductsDB,
+};

@@ -1,6 +1,6 @@
 /***************************** HANDLED BUSINESS LOGIC IN THIS CONTROLLER FILE ***************************/
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const userModel = require("./models");
 const { signToken } = require('../middlewares/auth')
@@ -176,11 +176,52 @@ const deleteUserByEmail = async(req, res) => {
             message: "Internal server error"
         })
     }
-
 }
-module.exports = { signUp, login, getAll, updateUser, deleteUser, deleteUserByEmail }
 
+//   if (isAdmin === false) {
+//     return res.status(403).json({
+//       status: 403,
+//       message: "You are not allowed to perform this operation",
+//     });
+//   }
+//   try {
+//     // console.log("this is inside promise body");
+//     const x = await userModel.deleteMany();
+//     const y = await userModel.find();
 
+//     if (y.length === 0) {
+//       console.log(x, "after deletion");
+//       return res.status(200).json({
+//         status: 200,
+//         message: "Users deleted successfully",
+//         result: x,
+//       });
+//     } else {
+//       console.log("Error in else block");
+//       return res.status(500).json({
+//         status: 500,
+//         message: "Something went wrong!",
+//       });
+//     }
+//   } catch (error) {
+//     console.log("Error in catch block");
+
+//     return res.status(500).json({
+//       status: 500,
+//       message: "Something went wrong!",
+//       error: error.message,
+//     });
+//   }
+// };
+module.exports = {
+  signUp,
+  login,
+  getAll,
+  updateUser,
+  deleteUser,
+  deleteUserByEmail,
+  //   emptyUsersDB,
+};
 
 /*********** DEPRECATED OTP SYSTEM **********/
 
