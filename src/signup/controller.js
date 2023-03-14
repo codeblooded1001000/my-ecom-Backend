@@ -133,7 +133,7 @@ const updateUser = async(req, res) => {
             return res.status(500).send("Something Went Wrong")
         }
     }
-    /*************************************************************DELETE USER*****************************************************************/
+ /*************************************************************DELETE USER*****************************************************************/
 const deleteUser = async(req, res) => {
         try {
                 const _id = req.params.id
@@ -182,11 +182,17 @@ const deleteUserByEmail = async(req, res) => {
 
 const forgotPassword = async(req, res) => {
     try {
-        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+        const otp = otpGenerator.generate(6, { 
+            upperCaseAlphabets: false, 
+            specialChars: false
+         });
         const otpInDb = await otpModel.find({otp})
         if(otpInDb.length > 0){
             while(otpInDb.length > 0){
-               otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+               otp = otpGenerator.generate(6, { 
+                upperCaseAlphabets: false, 
+                specialChars: false 
+               });
                otpInDb = await otpModel.find({otp}) 
             }
         }

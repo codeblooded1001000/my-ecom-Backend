@@ -21,9 +21,9 @@ let mailOptions = {
 let otpMail = {
   from: '"My Ecom" <myecom931@gmail.com>',
   to: email,
-  subject: 'OTP h zi',
+  subject: 'OTP for My E-com',
   text: 'OTP for My E-com',
-  html: `<b>You OTP for my E-com is ${param}</b>`
+  html: `<b>Your OTP for my E-com is ${param}</b>`
 }
 
 transporter.sendMail(param ? otpMail : mailOptions, (error) => {
