@@ -4,6 +4,7 @@ const cartRoutes = require('./src/cart/routes')
 const checkoutRoute = require('./src/cart/checkout/routes');
 const adminRoutes = require('./src/admin/routes')
 const categoryRoutes = require('./src/productCategory/routes')
+const otpRoutes = require('./src/middlewares/otp/routes')
 
 const router = {
     '/users': signupRoutes,
@@ -11,6 +12,7 @@ const router = {
     '/carts': cartRoutes,
     '/checkout': checkoutRoute,
     '/admin': adminRoutes,
-    '/categories': categoryRoutes
+    '/categories': categoryRoutes,
+    '/otp': otpRoutes
 };
 module.exports = router

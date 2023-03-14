@@ -7,6 +7,8 @@ const {
   updateUser,
   deleteUser,
   deleteUserByEmail,
+  forgotPassword,
+  updatePassword
   //   emptyUsersDB,
 } = require("./controller");
 const { verifyToken, checkAdmin } = require('../middlewares/auth')
@@ -16,10 +18,12 @@ const { verifyToken, checkAdmin } = require('../middlewares/auth')
 
 router.post("/signUp", signUp)
 router.post("/login", login)
-router.get("/getAll", verifyToken, checkAdmin,getAll)
+router.get("/getAll", verifyToken, checkAdmin, getAll)
 router.delete('/deleteUser/:id', verifyToken , checkAdmin, deleteUser)
 router.delete(`/deleteUserByEmail`, verifyToken, deleteUserByEmail)
+router.get('/forgotPassword', forgotPassword)
 router.patch('/updateUser/:id', verifyToken ,updateUser)
-// router.post("/emptyUsersDB", emptyUsersDB); 
+router.patch('/updatePassword', verifyToken, updatePassword)
+// router.post("/emptyUsersDB", emptyUsersDB);
 
 module.exports = router;

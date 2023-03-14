@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendMail = async(email)=>{
+const sendMail = async(email, param)=>{
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -18,7 +18,15 @@ let mailOptions = {
   html: '<b>Thanks for Ordering from us</b>'
 };
 
-transporter.sendMail(mailOptions, (error, info) => {
+let otpMail = {
+  from: '"My Ecom" <myecom931@gmail.com>',
+  to: email,
+  subject: 'OTP h zi',
+  text: 'OTP for My E-com',
+  html: `<b>You OTP for my E-com is ${param}</b>`
+}
+
+transporter.sendMail(param ? otpMail : mailOptions, (error) => {
   if (error) {
     return console.log(error.message);
   }

@@ -3,9 +3,11 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const userModel = require("./models");
-const { signToken } = require('../middlewares/auth')
+const { signToken } = require('../middlewares/auth');
+const sendMail = require("../mail/sendMail");
     // const {Vonage} = require('@vonage/server-sdk')
-    // const otpGenerator = require('otp-generator')
+const otpGenerator = require('otp-generator');
+const otpModel = require("../middlewares/otp/models");
 
 /***************************** SIGNUP FUNCTION, IF THE USER IS NEW ***************************/
 const signUp = async(req, res) => {
@@ -178,6 +180,74 @@ const deleteUserByEmail = async(req, res) => {
     }
 }
 
+const forgotPassword = async(req, res) => {
+    try {
+        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+        const otpInDb = await otpModel.find({otp})
+        if(otpInDb.length > 0){
+            while(otpInDb.length > 0){
+               otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+               otpInDb = await otpModel.find({otp}) 
+            }
+        }
+        const {email} = req.body;
+        const existingUser = await userModel.findOne({email});
+        if(!existingUser){
+            return res.status(404).json({
+                success: false,
+                status: 404,
+                message: "User not found!"
+            })
+        }
+        var id = existingUser._id;
+        const otps = await otpModel.find({userId: id})
+        if(otps.length>=1){
+            for(var i=0; i<otps.length; i++){
+                await otps[i].delete()
+            }
+            await forgotPassword(req, res)
+        }
+        else{
+            await sendMail(email, otp);
+            const newOtp = new otpModel();
+            newOtp.otp = otp;
+            newOtp.userId = existingUser._id
+            await newOtp.save();
+            return res.status(200).json({
+                success: true,
+                status: 200,
+                message: "Mail sent, go to this link /otp/verifyOtp"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Internal server error"
+        })
+    }
+}
+
+const updatePassword = async(req, res) => {
+    try {
+       let {userId} = req.user
+       let user = await userModel.findById(userId);
+       let otp = await otpModel.findOne({userId})
+       user.password = await bcrypt.hash(req.body.password, 10)
+       await user.save();
+       await otp.delete();
+       return res.status(200).json({
+        success: true,
+        status: 200,
+        message: "Password Updated"
+       })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Internal server error"
+        })
+    }
+}
+
 //   if (isAdmin === false) {
 //     return res.status(403).json({
 //       status: 403,
@@ -220,6 +290,8 @@ module.exports = {
   updateUser,
   deleteUser,
   deleteUserByEmail,
+  forgotPassword,
+  updatePassword
   //   emptyUsersDB,
 };
 
