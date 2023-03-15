@@ -105,7 +105,7 @@ const login = async(req, res) => {
 /********************** GET ALL FUNCTION, TO GET ALL THE USERS IN OUR DATABSE, ONLY ADMIN HAVE THE AUTHORITY TO CALL THIS FUNCTION***************************/
 const getAll = async(req, res) => {
     try {
-        const users = await userModel.find({}); // FETCHING ALL USER FORM THE DATABAS
+        const users = await userModel.find({}); // FETCHING ALL USER FORM THE DATABASE
         res.send(users)
     } catch (error) {
         res.status(500).send(error)
@@ -134,15 +134,15 @@ const updateUser = async(req, res) => {
     /*************************************************************DELETE USER*****************************************************************/
 const deleteUser = async(req, res) => {
         try {
-                const _id = req.params.id
-                const user = await userModel.findOne({ _id })
-                await user.delete()
+            const _id = req.params.id
+            const user = await userModel.findOne({ _id })
+            await user.delete()
 
-                return res.status(200).json({
-                    status: 200,
-                    message: `User named ${user.name} Deleted Successfully`,
-                    data: user
-                })
+            return res.status(200).json({
+                status: 200,
+                message: `User named ${user.name} Deleted Successfully`,
+                data: user
+            })
         } catch (error) {
             return res.status(500).json({
                 status: 500,
@@ -153,22 +153,22 @@ const deleteUser = async(req, res) => {
     /*************************************************************DELETE USER by EMAIL*****************************************************************/
 const deleteUserByEmail = async(req, res) => {
     try {
-        let {email} = req.query
-        const user = await userModel.findOneAndDelete({email})
+        let { email } = req.query
+        const user = await userModel.findOneAndDelete({ email })
 
-        if(!user){
-           return res.status(404).json({
-            success: false,
-            message: "User not found"
-           })
-        }
-            await user.delete()
-
-            return res.status(200).json({
-                status: 200,
-                message: `${user.name} deleted successfully`,
-                data: user
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
             })
+        }
+        await user.delete()
+
+        return res.status(200).json({
+            status: 200,
+            message: `${user.name} deleted successfully`,
+            data: user
+        })
 
     } catch (error) {
         return res.status(500).json({
@@ -214,13 +214,13 @@ const deleteUserByEmail = async(req, res) => {
 //   }
 // };
 module.exports = {
-  signUp,
-  login,
-  getAll,
-  updateUser,
-  deleteUser,
-  deleteUserByEmail,
-  //   emptyUsersDB,
+    signUp,
+    login,
+    getAll,
+    updateUser,
+    deleteUser,
+    deleteUserByEmail,
+    //   emptyUsersDB,
 };
 
 /*********** DEPRECATED OTP SYSTEM **********/
