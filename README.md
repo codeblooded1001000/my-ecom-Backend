@@ -2,6 +2,8 @@
 
 The My E-com Backend is a RESTful API built to support the My E-com online marketplace application.
 
+Frontend repo: [my-ecom-frontend](https://github.com/prtkjha01/my-ecom)
+
 ## Features
 
 * User authentication and authorization.
