@@ -20,6 +20,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    currency: {
+      type: String,
+      required: true,
+    },
     discount: {
       type: Number,
     },
@@ -28,26 +32,51 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     variants: {
-      type: Array,
+      type: [Number],
     },
     specifications: {
       type: Array,
       required: true,
     },
     similarProducts: {
-      type: Array,
+      type: [mongoose.Types.ObjectId],
       required: true,
     },
     FAQ: {
-      type: Array,
+      type: [
+        {
+          question: String,
+          answer: String,
+        },
+      ],
       required: true,
     },
     category: {
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
     },
     reviews: {
-      type: Array,
+      type: [
+        {
+          reviewer: mongoose.Types.ObjectId,
+          title: {
+            type: String,
+            required: false,
+          },
+          comment: {
+            type: String,
+            required: false,
+          },
+          rating: {
+            type: Number,
+            required: true,
+          },
+          date: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
       required: true,
     },
     createdBy: {
